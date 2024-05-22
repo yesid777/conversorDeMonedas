@@ -53,37 +53,37 @@ El proyecto está **completado** y en su versión estable. Todas las funcionalid
 
 
 
-### Acceso al Proyecto
+## Acceso al Proyecto
 Puedes clonar este repositorio utilizando el siguiente comando:
 
 bash
 Copiar código
 git clone https://github.com/yesid777/conversorDeMonedas.git
 
-### Tecnologías Utilizadas
+## Tecnologías Utilizadas
 
-#### Java
+### Java
 
 <img src="https://upload.wikimedia.org/wikipedia/en/thumb/3/30/Java_programming_language_logo.svg/800px-Java_programming_language_logo.svg.png" width="10%">
 
-#### API de tasas de cambio ("[ExchangeRatesAPI](https://www.exchangerate-api.com/)")
+### API de tasas de cambio ("[ExchangeRatesAPI](https://www.exchangerate-api.com/)")
 
 <img src="https://www.exchangerate-api.com/img/hr-logo-2022-ldpi-rc.png" width="50%">
 
 [https://www.exchangerate-api.com/](https://www.exchangerate-api.com/img/hr-logo-2022-ldpi-rc.png)
 
-#### Intelillij
+### Intelillij
 <img src="https://devring.files.wordpress.com/2017/10/intellij.png" width="50%">
 
-#### HTTP Requests
+### HTTP Requests
 
-#### Programación Orientada a Objetos
+### Programación Orientada a Objetos
 
 
-### Personas Desarrolladoras del Proyecto
+## Personas Desarrolladoras del Proyecto
 Yesid Dodge
 
 
-### Licencia
+## Licencia
 Este proyecto es de licencia libre para uso educativo.
 
