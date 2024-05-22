@@ -30,7 +30,7 @@ El proyecto está **completado** y en su versión estable. Todas las funcionalid
 ### Ejemplo de Uso
 
 1. Ingresa la moneda de origen (por ejemplo, USD).
-   [Moneda Inicial](./images/moneda1.png)
+   ![Descripción de la imagen](/images/moneda1.jpg)
 3. Ingresa la cantidad a convertir (por ejemplo, 100).
 4. Ingresa la moneda de destino (por ejemplo, EUR).
 5. El programa devolverá el valor de la conversión.
