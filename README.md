@@ -11,6 +11,7 @@
 6. [Personas Desarrolladoras del Proyecto](#personas-desarrolladoras-del-proyecto)
 7. [Licencia](#licencia)
 
+
 ## Descripción del Proyecto
 
 Este proyecto es un conversor de monedas desarrollado en Java. Se conecta a una API para obtener las tasas de cambio y permite convertir cantidades de una moneda a otra. El programa es capaz de manejar múltiples monedas y proporciona una forma rápida y fácil de realizar conversiones de divisas.
