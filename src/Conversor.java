@@ -25,7 +25,7 @@ public class Conversor {
             return new Gson().fromJson(response.body(),Moneda.class);
 
         } catch (Exception e) {
-            throw new RuntimeException("No encontre la Moneda");
+            throw new RuntimeException("Momeda mal escrita, favor validar, escribiste: "+ moneda1 + " - " + moneda2);
         }
 
     }

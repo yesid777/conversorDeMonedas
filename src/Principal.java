@@ -61,7 +61,7 @@ public class Principal {
                 System.out.println("Tus "+cantidad + " " + moneda1 +" Equivalen hoy a $" + frmt.format(operacion) + " "+ moneda2);
 
             }catch (NumberFormatException e){
-                System.out.println("Numero no encontrado " + e.getMessage());
+                System.out.println("la cantidad debe se numerica");
 
             }catch (RuntimeException e){
                 System.out.println(e.getMessage());

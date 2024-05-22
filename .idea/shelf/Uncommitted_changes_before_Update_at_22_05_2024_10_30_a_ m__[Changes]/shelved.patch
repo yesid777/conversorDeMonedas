@@ -1,0 +1,158 @@
+Index: src/Principal.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>import javax.sound.midi.Soundbank;\r\nimport java.io.IOException;\r\nimport java.text.DecimalFormat;\r\nimport java.util.Scanner;\r\n\r\npublic class Principal {\r\n    public static void main(String[] args) {\r\n        Scanner lectura = new Scanner(System.in);\r\n\r\n        String mensaje = \"\"\"\r\n            ********************************************\r\n            *  Bienvenido al Conversor de monedas YDH  *\r\n            ********************************************\r\n            **      Ten en cuenta lo siguente:        **\r\n            ********************************************\r\n            || CODIGO   ||          MONEDA            ||\r\n            --------------------------------------------\r\n            ||   USD    ||  United States Dollar      ||\r\n            ||   EUR    || \tEuro                      ||\r\n            ||   COP    || \tColombian Peso            ||\r\n            ||   BRL    ||  Brazilian Real            ||\r\n            ||   CNY    ||  Chinese Renminbi          ||\r\n            ||   JPY    || \tJapanese Yen              ||\r\n            ||   ARS    ||  Argentina Peso            ||\r\n            ||   CAD    ||  Canadian Dollar           ||\r\n            ********************************************\r\n            ********************************************\r\n            \"\"\";\r\n\r\n        //Crea un formato para imprimir solo 2 decimas despues del double\r\n        DecimalFormat frmt = new DecimalFormat(\"#.##\");\r\n        DecimalFormat frmt4 = new DecimalFormat(\"#.####\");\r\n\r\n\r\n        while (true){\r\n            System.out.println(mensaje);\r\n\r\n            //CREAMOS UN OBJETO DE TIPO Conversor con el nombre de consulta\r\n            Conversor consulta = new Conversor();\r\n\r\n            try{\r\n                System.out.println(\"Escribe la moneda que quieres convertir: \");\r\n                var moneda1 = lectura.nextLine();\r\n\r\n\r\n                System.out.println(\"Escribe la cantidad de \" + moneda1 + \" a convertir: \");\r\n                var cantidad =  Double.parseDouble(lectura.nextLine());\r\n\r\n\r\n                System.out.println(\"Escribe la moneda a que quieres convertir los \" + moneda1 + \":\");\r\n                var moneda2 = lectura.nextLine();\r\n\r\n\r\n                //CREAMOS UN OBJETO DE TIPO Moneda Y ASIGNAMOS EL RESULTADO DEL METODO convertirA\r\n                System.out.println(\"*************************************************\");\r\n                Moneda moneda = consulta.convertirA(moneda1, moneda2);\r\n                System.out.println(\"La moneda \" + moneda1 + \" cotiza hoy en: $\" + frmt4.format(moneda.conversion_rate()) +\" \" + moneda2);\r\n\r\n                double operacion = moneda.conversion_rate() * cantidad;\r\n\r\n                System.out.println(\"Tus \"+cantidad + \" \" + moneda1 +\" Equivalen hoy a $\" + frmt.format(operacion) + \" \"+ moneda2);\r\n\r\n            }catch (NumberFormatException e){\r\n                System.out.println(\"Numero no encontrado \" + e.getMessage());\r\n\r\n            }catch (RuntimeException e){\r\n                System.out.println(e.getMessage());\r\n                System.out.println(\"Vuelve a intentarlo..\");\r\n            }\r\n            System.out.println(\"*************************************************\");\r\n            System.out.println(\"¿Desea continuar? (S/N): \");\r\n            var continuar = lectura.nextLine();\r\n            System.out.println(continuar);\r\n\r\n            if (continuar.equals(\"n\") ||continuar.equals(\"N\") ) {\r\n                System.out.println(\"*************************************************\");\r\n                System.out.println(\"Gracias por utilizar nuestro Conversor !!!\");\r\n                System.out.println(\"*************************************************\");\r\n                break;\r\n            }\r\n\r\n        }\r\n\r\n\r\n\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/Principal.java b/src/Principal.java
+--- a/src/Principal.java	(revision d810c4f4ee129d98b14bdd51ace6447d752bff3f)
++++ b/src/Principal.java	(date 1716391448956)
+@@ -61,7 +61,7 @@
+                 System.out.println("Tus "+cantidad + " " + moneda1 +" Equivalen hoy a $" + frmt.format(operacion) + " "+ moneda2);
+ 
+             }catch (NumberFormatException e){
+-                System.out.println("Numero no encontrado " + e.getMessage());
++                System.out.println("lA cantidad debe se numerica");
+ 
+             }catch (RuntimeException e){
+                 System.out.println(e.getMessage());
+Index: src/Conversor.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>import com.google.gson.Gson;\r\n\r\nimport java.net.URI;\r\nimport java.net.http.HttpClient;\r\nimport java.net.http.HttpRequest;\r\nimport java.net.http.HttpResponse;\r\n\r\npublic class Conversor {\r\n\r\n    public Moneda convertirA(String moneda1, String moneda2){\r\n        //CONECTAR CON EL API MEDIANTE HTTP REQUEST\r\n        String apiKey = \"3b692e24ad35470118f77f9d\";\r\n        URI direccion = URI.create(\"https://v6.exchangerate-api.com/v6/\"+ apiKey +\"/pair/\"+moneda1+\"/\"+ moneda2);\r\n\r\n        HttpClient client = HttpClient.newHttpClient();\r\n        HttpRequest request = HttpRequest.newBuilder()\r\n                .uri(direccion)\r\n                .build();\r\n\r\n        try {\r\n            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());\r\n\r\n            //DEBEMOS IMPORTAR LA CLASE DESDE PROJEC ESTRUCTURE\r\n            //retorna el JSON convertido en nuestra Pelicula\r\n            return new Gson().fromJson(response.body(),Moneda.class);\r\n\r\n        } catch (Exception e) {\r\n            throw new RuntimeException(\"No encontre la Moneda\");\r\n        }\r\n\r\n    }\r\n\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/Conversor.java b/src/Conversor.java
+--- a/src/Conversor.java	(revision d810c4f4ee129d98b14bdd51ace6447d752bff3f)
++++ b/src/Conversor.java	(date 1716391448945)
+@@ -25,7 +25,7 @@
+             return new Gson().fromJson(response.body(),Moneda.class);
+ 
+         } catch (Exception e) {
+-            throw new RuntimeException("No encontre la Moneda");
++            throw new RuntimeException("Momeda mal escrita, favor validar, escribiste: "+ moneda1 + " - " + moneda2);
+         }
+ 
+     }
+Index: .idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"AutoImportSettings\">\r\n    <option name=\"autoReloadType\" value=\"SELECTIVE\" />\r\n  </component>\r\n  <component name=\"ChangeListManager\">\r\n    <list default=\"true\" id=\"585094af-df62-4358-ab8e-89d6fe363f4c\" name=\"Changes\" comment=\"\">\r\n      <change afterPath=\"$PROJECT_DIR$/.gitignore\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/.idea/misc.xml\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/.idea/modules.xml\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/.idea/vcs.xml\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/.idea/workspace.xml\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/conversorDeMonedas.iml\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/src/Conversor.java\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/src/Moneda.java\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/src/Principal.java\" afterDir=\"false\" />\r\n    </list>\r\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\r\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\r\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\r\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\r\n  </component>\r\n  <component name=\"FileTemplateManagerImpl\">\r\n    <option name=\"RECENT_TEMPLATES\">\r\n      <list>\r\n        <option value=\"Class\" />\r\n        <option value=\"Record\" />\r\n      </list>\r\n    </option>\r\n  </component>\r\n  <component name=\"Git.Settings\">\r\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$\" />\r\n  </component>\r\n  <component name=\"ProjectColorInfo\"><![CDATA[{\r\n  \"associatedIndex\": 2\r\n}]]></component>\r\n  <component name=\"ProjectId\" id=\"2gkTorq5NRulFznvd3Hu93d9A5W\" />\r\n  <component name=\"ProjectLevelVcsManager\" settingsEditedManually=\"true\">\r\n    <ConfirmationsSetting value=\"2\" id=\"Add\" />\r\n  </component>\r\n  <component name=\"ProjectViewState\">\r\n    <option name=\"hideEmptyMiddlePackages\" value=\"true\" />\r\n    <option name=\"showLibraryContents\" value=\"true\" />\r\n  </component>\r\n  <component name=\"PropertiesComponent\"><![CDATA[{\r\n  \"keyToString\": {\r\n    \"Application.Principal.executor\": \"Run\",\r\n    \"RunOnceActivity.ShowReadmeOnStart\": \"true\",\r\n    \"git-widget-placeholder\": \"master\",\r\n    \"kotlin-language-version-configured\": \"true\",\r\n    \"last_opened_file_path\": \"C:/Users/yesid.dodge/OneDrive - Orbia/Documentos/ORACLE/BACKEND/JAVA3 API/conversorDeMonedas/gson-2.10.1.jar\",\r\n    \"project.structure.last.edited\": \"Modules\",\r\n    \"project.structure.proportion\": \"0.0\",\r\n    \"project.structure.side.proportion\": \"0.2\"\r\n  },\r\n  \"keyToStringList\": {\r\n    \"ChangesTree.GroupingKeys\": [\r\n      \"directory\",\r\n      \"module\"\r\n    ]\r\n  }\r\n}]]></component>\r\n  <component name=\"SpellCheckerSettings\" RuntimeDictionaries=\"0\" Folders=\"0\" CustomDictionaries=\"0\" DefaultDictionary=\"application-level\" UseSingleDictionary=\"true\" transferred=\"true\" />\r\n  <component name=\"TaskManager\">\r\n    <task active=\"true\" id=\"Default\" summary=\"Default task\">\r\n      <changelist id=\"585094af-df62-4358-ab8e-89d6fe363f4c\" name=\"Changes\" comment=\"\" />\r\n      <created>1716240756637</created>\r\n      <option name=\"number\" value=\"Default\" />\r\n      <option name=\"presentableId\" value=\"Default\" />\r\n      <updated>1716240756637</updated>\r\n    </task>\r\n    <servers />\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+--- a/.idea/workspace.xml	(revision d810c4f4ee129d98b14bdd51ace6447d752bff3f)
++++ b/.idea/workspace.xml	(date 1716391542668)
+@@ -4,16 +4,16 @@
+     <option name="autoReloadType" value="SELECTIVE" />
+   </component>
+   <component name="ChangeListManager">
+-    <list default="true" id="585094af-df62-4358-ab8e-89d6fe363f4c" name="Changes" comment="">
+-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/conversorDeMonedas.iml" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/src/Conversor.java" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/src/Moneda.java" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/src/Principal.java" afterDir="false" />
++    <list default="true" id="585094af-df62-4358-ab8e-89d6fe363f4c" name="Changes" comment="Cargando proyecto">
++      <changelist_data name="Yesid dodge" email="" />
++      <change afterPath="$PROJECT_DIR$/images/cantidad.png" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/images/interface.png" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/images/moneda1.png" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/images/moneda2.png" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/images/resultado.png" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/Conversor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Conversor.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/Principal.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Principal.java" afterDir="false" />
+     </list>
+     <option name="SHOW_DIALOG" value="false" />
+     <option name="HIGHLIGHT_CONFLICTS" value="true" />
+@@ -29,11 +29,29 @@
+     </option>
+   </component>
+   <component name="Git.Settings">
++    <option name="PREVIOUS_COMMIT_AUTHORS">
++      <list>
++        <option value="Yesid dodge" />
++      </list>
++    </option>
+     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
++    <option name="SIGN_OFF_COMMIT" value="true" />
+   </component>
+-  <component name="ProjectColorInfo"><![CDATA[{
+-  "associatedIndex": 2
+-}]]></component>
++  <component name="GitHubPullRequestSearchHistory">{
++  &quot;lastFilter&quot;: {
++    &quot;state&quot;: &quot;OPEN&quot;,
++    &quot;assignee&quot;: &quot;yesid777&quot;
++  }
++}</component>
++  <component name="GithubPullRequestsUISettings">{
++  &quot;selectedUrlAndAccountId&quot;: {
++    &quot;url&quot;: &quot;https://github.com/yesid777/conversorDeMonedas.git&quot;,
++    &quot;accountId&quot;: &quot;6cf9cc11-a94a-41dd-ad85-cf9a08de749e&quot;
++  }
++}</component>
++  <component name="ProjectColorInfo">{
++  &quot;associatedIndex&quot;: 2
++}</component>
+   <component name="ProjectId" id="2gkTorq5NRulFznvd3Hu93d9A5W" />
+   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+     <ConfirmationsSetting value="2" id="Add" />
+@@ -42,24 +60,24 @@
+     <option name="hideEmptyMiddlePackages" value="true" />
+     <option name="showLibraryContents" value="true" />
+   </component>
+-  <component name="PropertiesComponent"><![CDATA[{
+-  "keyToString": {
+-    "Application.Principal.executor": "Run",
+-    "RunOnceActivity.ShowReadmeOnStart": "true",
+-    "git-widget-placeholder": "master",
+-    "kotlin-language-version-configured": "true",
+-    "last_opened_file_path": "C:/Users/yesid.dodge/OneDrive - Orbia/Documentos/ORACLE/BACKEND/JAVA3 API/conversorDeMonedas/gson-2.10.1.jar",
+-    "project.structure.last.edited": "Modules",
+-    "project.structure.proportion": "0.0",
+-    "project.structure.side.proportion": "0.2"
++  <component name="PropertiesComponent">{
++  &quot;keyToString&quot;: {
++    &quot;Application.Principal.executor&quot;: &quot;Run&quot;,
++    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
++    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
++    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
++    &quot;last_opened_file_path&quot;: &quot;D:/ORACLE/conversorDeMonedas&quot;,
++    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
++    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
++    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;
+   },
+-  "keyToStringList": {
+-    "ChangesTree.GroupingKeys": [
+-      "directory",
+-      "module"
++  &quot;keyToStringList&quot;: {
++    &quot;ChangesTree.GroupingKeys&quot;: [
++      &quot;directory&quot;,
++      &quot;module&quot;
+     ]
+   }
+-}]]></component>
++}</component>
+   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+   <component name="TaskManager">
+     <task active="true" id="Default" summary="Default task">
+@@ -71,4 +89,8 @@
+     </task>
+     <servers />
+   </component>
++  <component name="VcsManagerConfiguration">
++    <MESSAGE value="Cargando proyecto" />
++    <option name="LAST_COMMIT_MESSAGE" value="Cargando proyecto" />
++  </component>
+ </project>
+\ No newline at end of file
